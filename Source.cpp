@@ -47,12 +47,9 @@ bool sumsuccessorpath(Node* pRoot, int sum)
 	if (pRoot == nullptr) {
 		return false;
 	}
-
-	// recur for the left and right subtree with reduced sum
 	bool left = sumsuccessorpath(pRoot->pLeft, sum - pRoot->i);
 	bool right = sumsuccessorpath(pRoot->pRight, sum - pRoot->i);
 
-	// print the current node if it lies on a path with a given sum
 	if (left || right) {
 		cout << pRoot->i << " ";
 	}
