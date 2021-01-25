@@ -1,5 +1,5 @@
 #include <iostream>
-#include <list>
+#include <vector>
 using namespace std;
 
 
@@ -15,10 +15,10 @@ struct Node
 };
 
 
-std::list<Node*> branch;
 
 
-int maxsum(Node* pRoot)
+
+int maxsum(Node* pRoot )
 {
 	if (!pRoot) {
 		return 0;
@@ -30,28 +30,39 @@ int maxsum(Node* pRoot)
 
 	 // After recursive iterations we get the higher sum either from right or left
 	if (left >= right) {
-		if ((pRoot->pLeft)) {
-			branch.push_back(pRoot->pLeft);
-		}
-		return left + pRoot->i;
-	}
+		
+		return left + pRoot->i;}
 	else {
 		
-		return right + pRoot->i;
-	}
-
-};
-
-void successpath(Node* pRoot) {
-
-
-
-
+		return right + pRoot->i;}
 }
 
+bool sumsuccessorpath(Node* pRoot, int sum)
+{
+
+	if (sum == 0) { // this if statement checks if we found the leaf or not. Sum == 0 means we found the LEAF!!!!!
+		return true;
+	}
+
+	if (pRoot == nullptr) {
+		return false;
+	}
+
+	// recur for the left and right subtree with reduced sum
+	bool left = sumsuccessorpath(pRoot->pLeft, sum - pRoot->i);
+	bool right = sumsuccessorpath(pRoot->pRight, sum - pRoot->i);
+
+	// print the current node if it lies on a path with a given sum
+	if (left || right) {
+		cout << pRoot->i << " ";
+	}
+
+	return left || right;
+}
 int main(){
 	//I'm manually constructing the tree because this is not an ordered tree!!!
 	Node* pRoot = nullptr;
+
 	pRoot = new Node(5);
 	pRoot->pLeft = new Node(4);
 	pRoot->pLeft->pLeft = new Node(11);
@@ -63,8 +74,11 @@ int main(){
 	pRoot->pRight->pRight = new Node(4);
 	pRoot->pRight->pRight->pRight = new Node(1);
 	int totalsum = maxsum(pRoot);
+	
+	cout << "Branch with the largest sum is (in reverse):" << " ";
+	sumsuccessorpath(pRoot, 27);
+	cout << "-> SUM = " << " ";
 	cout << totalsum << endl;
-	for (auto i : branch)
-		std::cout << i->i << "\n";
+
 	
 }
